@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expenses & Budgeting - Livestock Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fffaf0;
+    }
+
+    nav {
+      background: #4caf50;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-weight: 500;
+      margin-top: 1rem;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.3rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.9rem 1.5rem;
+      background: #4caf50;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1b5e20;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 2rem;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 0.8rem;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f1f1;
+    }
+
+    .message {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    .total {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="animal-records.html">Animal Records</a>
+    <a href="health-monitoring.html">Health</a>
+    <a href="feeding-schedule.html">Feeding</a>
+    <a href="breeding-records.html">Breeding</a>
+    <a href="production-tracking.html">Production</a>
+    <a href="vaccination-history.html">Vaccines</a>
+    <a href="alerts-reminders.html">Reminders</a>
+    <a href="reports-analytics.html">Reports</a>
+    <a href="inventory-management.html">Inventory</a>
+    <a href="expenses-budgeting.html">Expenses</a>
+    <a href="staff-management.html">Staff</a>
+    <a href="chatbot-assistant.html">Chatbot</a>
+  </nav>
+
+  <header>💸 Expenses & Budgeting</header>
+
+  <div class="container">
+    <h2>Log an Expense</h2>
+    <form id="expense-form">
+      <label for="desc">Description</label>
+      <input type="text" id="desc" name="desc" required />
+
+      <label for="category">Category</label>
+      <select id="category" name="category">
+        <option value="Feed">Feed</option>
+        <option value="Health">Health</option>
+        <option value="Maintenance">Maintenance</option>
+        <option value="Staff">Staff</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="amount">Amount (₹)</label>
+      <input type="number" id="amount" name="amount" required />
+
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date" required />
+
+      <button type="submit">➕ Add Expense</button>
+      <div class="message" id="msg"></div>
+    </form>
+
+    <h2>Expense Records</h2>
+    <table id="expense-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Amount (₹)</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="total" id="total-expense">Total: ₹0</div>
+  </div>
+
+  <script>
+    const form = document.getElementById("expense-form");
+    const tableBody = document.querySelector("#expense-table tbody");
+    const totalExpense = document.getElementById("total-expense");
+    const msg = document.getElementById("msg");
+
+    let expenses = [];
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const desc = form.desc.value;
+      const category = form.category.value;
+      const amount = parseFloat(form.amount.value);
+      const date = form.date.value;
+
+      const newExpense = { desc, category, amount, date };
+      expenses.push(newExpense);
+
+      msg.textContent = "✅ Expense recorded!";
+      msg.style.color = "green";
+      form.reset();
+      updateTable();
+    });
+
+    function updateTable() {
+      tableBody.innerHTML = "";
+      let total = 0;
+
+      expenses.forEach((exp) => {
+        total += exp.amount;
+        const row = `
+          <tr>
+            <td>${exp.desc}</td>
+            <td>${exp.category}</td>
+            <td>₹${exp.amount.toFixed(2)}</td>
+            <td>${exp.date}</td>
+          </tr>
+        `;
+        tableBody.innerHTML += row;
+      });
+
+      totalExpense.textContent = `Total: ₹${total.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>

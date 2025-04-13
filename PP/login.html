@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Livestock Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('https://images.unsplash.com/photo-1586864381708-e7f848f2dc41?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    .header {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #ddd;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2e3a59;
+    }
+
+    .navbar {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #2e3a59;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: background 0.3s, color 0.3s;
+      font-weight: 500;
+    }
+
+    .nav-link:hover {
+      background-color: #2e3a59;
+      color: #fff;
+    }
+
+    .nav-link.active {
+      background-color: #ffc107;
+      color: #2e3a59;
+    }
+
+    /* Login Box */
+    .login-container {
+      max-width: 400px;
+      margin: 5rem auto;
+      padding: 2.5rem 2rem;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .login-container h2 {
+      color: #2e3a59;
+      margin-bottom: 1.5rem;
+    }
+
+    .login-container img {
+      width: 80px;
+      margin-bottom: 1rem;
+    }
+
+    .login-container label {
+      display: block;
+      text-align: left;
+      margin: 0.5rem 0 0.25rem;
+      color: #444;
+      font-weight: 500;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-container button:hover {
+      background-color: #218838;
+    }
+
+    .footer-text {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .footer-text a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+    /* Loader */
+    #loader {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255,255,255,0.7);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 8px solid #eee;
+      border-top: 8px solid #28a745;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media(max-width: 500px) {
+      .login-container {
+        margin: 3rem 1rem;
+        padding: 2rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">🐄 Livestock Manager</div>
+    <nav class="navbar">
+      <!-- <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="animal.html" class="nav-link">Add Animal</a>
+      <a href="view.html" class="nav-link">View Animals</a>
+      <a href="login.html" class="nav-link active">Login</a>
+      <a href="health.html" class="nav-link">health</a> -->
+
+      <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="animal-records.html">Animal Records</a>
+        <a href="health-monitoring.html">Health</a>
+        <a href="feeding-schedule.html">Feeding</a>
+        <a href="breeding-records.html">Breeding</a>
+        <a href="production-tracking.html">Production</a>
+        <a href="vaccination-history.html">Vaccines</a>
+        <a href="alerts-reminders.html">Reminders</a>
+        <a href="reports-analytics.html">Reports</a>
+        <a href="inventory-management.html">Inventory</a>
+        <a href="expenses-budgeting.html">Expenses</a>
+        <a href="staff-management.html">Staff</a>
+        <a href="chatbot-assistant.html">Chatbot</a>
+      </nav>
+      
+    </nav>
+  </div>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="login-container">
+    <img src="https://cdn-icons-png.flaticon.com/512/3063/3063827.png" alt="Login Icon" />
+    <h2>Login to Livestock Manager</h2>
+    <form id="loginForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">Login</button>
+    </form>
+    <div class="footer-text">
+      Don't have an account? <a href="#">Register here</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const loader = document.getElementById("loader");
+      loader.style.display = "flex";
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      setTimeout(() => {
+        loader.style.display = "none";
+        if (username === "admin" && password === "admin123") {
+          alert("Login successful!");
+          window.location.href = "index.html";
+        } else {
+          alert("Invalid credentials. Try admin / admin123.");
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

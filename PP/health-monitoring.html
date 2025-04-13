@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Livestock Manager - Health Monitoring</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 240px;
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h2 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .nav a {
+      color: #ecf0f1;
+      text-decoration: none;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .nav a:hover, .nav a.active {
+      background-color: #34495e;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f5f5f5;
+    }
+
+    .chatbot {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      width: 300px;
+      max-height: 400px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chatbot-header {
+      background: #4caf50;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    .chatbot-body {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+    }
+
+    .chatbot-footer {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+    }
+
+    .chatbot-footer input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .chatbot-footer button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      margin-left: 5px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <aside class="sidebar">
+    <h2>🐄 Livestock Manager</h2>
+    <nav class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="animal-records.html">Animal Records</a>
+      <a href="health-monitoring.html" class="active">Health Monitoring</a>
+      <a href="feeding-schedule.html">Feeding Schedule</a>
+      <a href="breeding-records.html">Breeding Records</a>
+      <a href="production-tracking.html">Production Tracking</a>
+      <a href="vaccination-history.html">Vaccination History</a>
+      <a href="alerts-reminders.html">Alerts & Reminders</a>
+      <a href="reports-analytics.html">Reports & Analytics</a>
+      <a href="inventory-management.html">Inventory Management</a>
+      <a href="expenses-budgeting.html">Expenses & Budgeting</a>
+      <a href="user-management.html">User Management</a>
+      <a href="chatbot.html">Chatbot Assistant</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="health-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2>Animal Health Monitoring 🩺</h2>
+        <button onclick="openModal()" style="padding: 10px 20px; background: #4caf50; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">➕ Add Health Record</button>
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search by Animal ID or Issue..." style="flex: 1; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px;">
+        <select id="filterStatus" onchange="filterTable()" style="padding: 0.6rem; border-radius: 6px; border: 1px solid #ccc;">
+          <option value="">All Status</option>
+          <option value="Healthy">Healthy</option>
+          <option value="Sick">Sick</option>
+          <option value="Under Treatment">Under Treatment</option>
+        </select>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table id="healthTable">
+          <thead>
+            <tr>
+              <th>Animal ID</th>
+              <th>Issue</th>
+              <th>Treatment</th>
+              <th>Vet Name</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>COW-001</td>
+              <td>Fever</td>
+              <td>Paracetamol injection</td>
+              <td>Dr. Rao</td>
+              <td style="color: orange;">Under Treatment</td>
+              <td>2025-04-09</td>
+            </tr>
+            <tr>
+              <td>COW-002</td>
+              <td>Limping</td>
+              <td>Hoof trimming & rest</td>
+              <td>Dr. Patel</td>
+              <td style="color: green;">Healthy</td>
+              <td>2025-03-25</td>
+            </tr>
+            <tr>
+              <td>COW-003</td>
+              <td>Mastitis</td>
+              <td>Antibiotics course</td>
+              <td>Dr. Sharma</td>
+              <td style="color: red;">Sick</td>
+              <td>2025-04-08</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal -->
+<div id="modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:10000; justify-content:center; align-items:center;">
+  <div style="background:white; padding:2rem; border-radius:10px; width:90%; max-width:500px; position:relative;">
+    <h3 style="margin-bottom:1rem;">Add New Health Record</h3>
+    <form onsubmit="addRecord(event)">
+      <input type="text" id="animalId" placeholder="Animal ID" required style="width:100%; margin-bottom:1rem; padding:0.6rem;" />
+      <input type="text" id="issue" placeholder="Health Issue" required style="width:100%; margin-bottom:1rem; padding:0.6rem;" />
+      <input type="text" id="treatment" placeholder="Treatment Given" required style="width:100%; margin-bottom:1rem; padding:0.6rem;" />
+      <input type="text" id="vet" placeholder="Vet Name" required style="width:100%; margin-bottom:1rem; padding:0.6rem;" />
+      <select id="status" required style="width:100%; margin-bottom:1rem; padding:0.6rem;">
+        <option value="">Select Status</option>
+        <option value="Healthy">Healthy</option>
+        <option value="Sick">Sick</option>
+        <option value="Under Treatment">Under Treatment</option>
+      </select>
+      <input type="date" id="date" required style="width:100%; margin-bottom:1.5rem; padding:0.6rem;" />
+      <button type="submit" style="background:#4caf50; color:white; border:none; padding:0.6rem 1rem; border-radius:6px;">Add Record</button>
+      <button type="button" onclick="closeModal()" style="margin-left:10px; background:#ccc; padding:0.6rem 1rem; border:none; border-radius:6px;">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<!-- Chatbot -->
+<div class="chatbot">
+  <div class="chatbot-header">Livestock Bot</div>
+  <div class="chatbot-body" id="chatbox">
+    <p><strong>Bot:</strong> Hi! How can I help you with animal health today?</p>
+  </div>
+  <div class="chatbot-footer">
+    <input type="text" id="chatInput" placeholder="Ask me something..." />
+    <button onclick="sendChat()">Send</button>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById("modal").style.display = "flex";
+  }
+
+  function closeModal() {
+    document.getElementById("modal").style.display = "none";
+  }
+
+  function getStatusColor(status) {
+    if (status === "Healthy") return "green";
+    if (status === "Sick") return "red";
+    return "orange";
+  }
+
+  function addRecord(e) {
+    e.preventDefault();
+    const table = document.querySelector("#healthTable tbody");
+    const row = table.insertRow();
+
+    row.innerHTML = `
+      <td>${document.getElementById("animalId").value}</td>
+      <td>${document.getElementById("issue").value}</td>
+      <td>${document.getElementById("treatment").value}</td>
+      <td>${document.getElementById("vet").value}</td>
+      <td style="color: ${getStatusColor(document.getElementById("status").value)};">${document.getElementById("status").value}</td>
+      <td>${document.getElementById("date").value}</td>
+    `;
+
+    closeModal();
+    e.target.reset();
+  }
+
+  function filterTable() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const statusFilter = document.getElementById("filterStatus").value.toLowerCase();
+    const rows = document.querySelectorAll("#healthTable tbody tr");
+
+    rows.forEach(row => {
+      const [id, issue, , , status] = row.children;
+      const matchesText = id.textContent.toLowerCase().includes(input) || issue.textContent.toLowerCase().includes(input);
+      const matchesStatus = !statusFilter || status.textContent.toLowerCase() === statusFilter;
+      row.style.display = matchesText && matchesStatus ? "" : "none";
+    });
+  }
+
+  function sendChat() {
+    const input = document.getElementById("chatInput");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    const chatbox = document.getElementById("chatbox");
+    const userMsg = `<p><strong>You:</strong> ${msg}</p>`;
+    const botMsg = `<p><strong>Bot:</strong> I'll look into "${msg}" and assist you shortly.</p>`;
+
+    chatbox.innerHTML += userMsg + botMsg;
+    chatbox.scrollTop = chatbox.scrollHeight;
+    input.value = "";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Livestock Manager Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #e8fce8);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #ddd;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2e3a59;
+    }
+
+    .navbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #2e3a59;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .navbar a:hover {
+      background-color: #2e3a59;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar a.active {
+      background-color: #ffc107;
+      color: #2e3a59;
+    }
+
+    .main {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 800px;
+    }
+
+    .hero img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .hero h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      color: #444;
+    }
+
+    .actions .btn {
+      padding: 0.8rem 1.5rem;
+      margin: 0.5rem;
+      text-decoration: none;
+      border-radius: 8px;
+      background-color: #4caf50;
+      color: white;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .actions .btn.secondary {
+      background-color: #2196f3;
+    }
+
+    .actions .btn img {
+      height: 24px;
+      width: 24px;
+    }
+
+    .actions .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      background-color: rgba(0,0,0,0.03);
+    }
+
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      display: none;
+    }
+
+    .spinner {
+      border: 8px solid #eee;
+      border-top: 8px solid #4caf50;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    #chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #4caf50;
+      color: #fff;
+      font-size: 1.4rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 50%;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 9999;
+    }
+
+    #chatbot-box {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 300px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      overflow: hidden;
+      z-index: 9999;
+      flex-direction: column;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .chatbot-header {
+      background: #4caf50;
+      color: white;
+      padding: 0.8rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #chat-messages {
+      height: 250px;
+      overflow-y: auto;
+      padding: 1rem;
+      font-size: 0.95rem;
+    }
+
+    #chat-form {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    #chat-form input {
+      flex: 1;
+      border: none;
+      padding: 0.75rem;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    #chat-form button {
+      background: #2196f3;
+      color: white;
+      border: none;
+      padding: 0 1rem;
+      cursor: pointer;
+    }
+
+    .msg {
+      margin-bottom: 0.8rem;
+    }
+
+    .msg.user {
+      text-align: right;
+      color: #2e3a59;
+    }
+
+    .msg.bot {
+      text-align: left;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div id="loader"><div class="spinner"></div></div>
+
+  <header class="header">
+    <div class="logo">🐄 Livestock Manager</div>
+    <nav class="navbar">
+      <a href="index.html" class="active">Dashboard</a>
+      <a href="animal-records.html">Animal Records</a>
+      <a href="health-monitoring.html">Health</a>
+      <a href="feeding-schedule.html">Feeding</a>
+      <a href="breeding-records.html">Breeding</a>
+      <a href="production-tracking.html">Production</a>
+      <a href="vaccination-history.html">Vaccines</a>
+      <a href="alerts-reminders.html">Reminders</a>
+      <a href="reports-analytics.html">Reports</a>
+      <a href="inventory-management.html">Inventory</a>
+      <a href="expenses-budgeting.html">Expenses</a>
+      <a href="staff-management.html">Staff</a>
+      <a href="chatbot-assistant.html">Chatbot</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <img src="OIP.jpg" alt="Livestock Image">
+      <h2>Welcome, Farmer 👩‍🌾</h2>
+      <p>Monitor and manage your livestock effortlessly with this intuitive dashboard.</p>
+      <div class="actions">
+        <a href="animal.html" class="btn">
+          <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Add Animal Icon"> Add Animal
+        </a>
+        <a href="view.html" class="btn secondary">
+          <img src="https://cdn-icons-png.flaticon.com/512/8833/8833481.png" alt="View Icon"> View Animals
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © 2025 Livestock Manager. All rights reserved.
+  </footer>
+
+  <div id="chatbot-toggle">💬</div>
+  <div id="chatbot-box">
+    <div class="chatbot-header">Livestock Bot 🤖 <span id="chatbot-close">✖</span></div>
+    <div id="chat-messages"></div>
+    <form id="chat-form">
+      <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off" />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('chatbot-toggle');
+    const box = document.getElementById('chatbot-box');
+    const closeBtn = document.getElementById('chatbot-close');
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('user-input');
+    const messages = document.getElementById('chat-messages');
+
+    toggle.addEventListener('click', () => {
+      box.style.display = 'flex';
+      toggle.style.display = 'none';
+    });
+
+    closeBtn.addEventListener('click', () => {
+      box.style.display = 'none';
+      toggle.style.display = 'block';
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (text === '') return;
+      appendMessage('user', text);
+      input.value = '';
+      setTimeout(() => {
+        simulateTyping(() => {
+          const reply = generateBotResponse(text);
+          appendMessage('bot', reply);
+          if (reply.includes("__suggest__")) showSuggestions(reply);
+        });
+      }, 600);
+    });
+
+    function appendMessage(sender, text) {
+      const div = document.createElement('div');
+      div.classList.add('msg', sender);
+      div.innerHTML = text.replace("__suggest__", "");
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function simulateTyping(callback) {
+      const div = document.createElement('div');
+      div.classList.add('msg', 'bot');
+      div.innerHTML = 'Typing<span>.</span><span>.</span><span>.</span>';
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+      setTimeout(() => {
+        div.remove();
+        callback();
+      }, 1000);
+    }
+
+    function showSuggestions(reply) {
+      const container = document.createElement('div');
+      container.classList.add('msg', 'bot');
+      container.innerHTML = `
+        <div style="margin-top: 10px;">
+          <button onclick="quickReply('Add animal')">➕ Add Animal</button>
+          <button onclick="quickReply('Health record')">🩺 Health</button>
+          <button onclick="quickReply('Feeding schedule')">🥕 Feeding</button>
+          <button onclick="quickReply('Vaccination')">💉 Vaccines</button>
+        </div>
+      `;
+      messages.appendChild(container);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function quickReply(text) {
+      appendMessage('user', text);
+      simulateTyping(() => {
+        const reply = generateBotResponse(text);
+        appendMessage('bot', reply);
+      });
+    }
+
+    function generateBotResponse(input) {
+      const msg = input.toLowerCase();
+      if (msg.includes("hi") || msg.includes("hello")) {
+        return "Hi there! 👋 I'm your livestock assistant. How can I help today? __suggest__";
+      } else if (msg.includes("add") && msg.includes("animal")) {
+        return "To add a new animal, go to the Dashboard and click ➕ Add Animal.";
+      } else if (msg.includes("health") || msg.includes("sick")) {
+        return "For health records, go to 🩺 Health Monitoring.";
+      } else if (msg.includes("feeding")) {
+        return "Feeding schedules help maintain productivity. Visit the Feeding page.";
+      } else if (msg.includes("vaccination") || msg.includes("vaccine")) {
+        return "Vaccinations are logged under 💉 Vaccination History.";
+      } else if (msg.includes("report")) {
+        return "You can generate reports under 📊 Reports & Analytics.";
+      } else {
+        return "I'm still improving! Try asking about adding animals, health, feeding, or vaccines. __suggest__";
+      }
+    }
+  </script>
+</body>
+</html>

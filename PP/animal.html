@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Animal</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f4f9fc;
+      color: #333;
+    }
+
+    header {
+      background: #0077cc;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: white;
+      background: #005fa3;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    nav a:hover {
+      background: #003f73;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #0077cc;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    #msg {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>➕ Add New Animal</h1>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="animal-records.html">Animal Records</a>
+      <a href="health-monitoring.html">Health</a>
+      <a href="feeding-schedule.html">Feeding</a>
+      <a href="breeding-records.html">Breeding</a>
+      <a href="production-tracking.html">Production</a>
+      <a href="vaccination-history.html">Vaccines</a>
+      <a href="alerts-reminders.html">Reminders</a>
+      <a href="reports-analytics.html">Reports</a>
+      <a href="inventory-management.html">Inventory</a>
+      <a href="expenses-budgeting.html">Expenses</a>
+      <a href="staff-management.html">Staff</a>
+      <a href="chatbot-assistant.html">Chatbot</a>
+    </nav>
+  </header>
+  <main>
+    <h2 style="text-align:center; margin-bottom: 20px;">Enter Animal Details</h2>
+    <form id="animalForm">
+      <label>Animal Name:
+        <input type="text" id="name" placeholder="e.g. Bella" required />
+      </label>
+      <label>Breed:
+        <input type="text" id="breed" placeholder="e.g. Jersey" required />
+      </label>
+      <label>Date of Birth:
+        <input type="date" id="dob" required />
+      </label>
+      <button type="submit">Add Animal</button>
+    </form>
+    <div id="msg"></div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

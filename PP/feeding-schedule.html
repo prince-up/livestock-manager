@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feeding Schedule - Livestock Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9fefc;
+    }
+
+    nav {
+      background: #4caf50;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.3rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.9rem 1.5rem;
+      background: #4caf50;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #388e3c;
+    }
+
+    .message {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="animal-records.html">Animal Records</a>
+    <a href="health-monitoring.html">Health</a>
+    <a href="feeding-schedule.html">Feeding</a>
+    <a href="breeding-records.html">Breeding</a>
+    <a href="production-tracking.html">Production</a>
+    <a href="vaccination-history.html">Vaccines</a>
+    <a href="alerts-reminders.html">Reminders</a>
+    <a href="reports-analytics.html">Reports</a>
+    <a href="inventory-management.html">Inventory</a>
+    <a href="expenses-budgeting.html">Expenses</a>
+    <a href="staff-management.html">Staff</a>
+    <a href="chatbot-assistant.html">Chatbot</a>
+  </nav>
+
+  <header>🍽️ Feeding Schedule</header>
+
+  <div class="container">
+    <h2>Add Feeding Schedule</h2>
+    <form id="feeding-form">
+      <label for="animal_id">Animal ID</label>
+      <input type="text" id="animal_id" name="animal_id" required />
+
+      <label for="feed_type">Feed Type</label>
+      <input type="text" id="feed_type" name="feed_type" required />
+
+      <label for="quantity">Quantity (kg)</label>
+      <input type="number" step="0.1" id="quantity" name="quantity" required />
+
+      <label for="feeding_time">Feeding Time</label>
+      <input type="time" id="feeding_time" name="feeding_time" required />
+
+      <label for="date">Feeding Date</label>
+      <input type="date" id="date" name="date" required />
+
+      <button type="submit">📥 Save Schedule</button>
+      <div class="message" id="msg"></div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("feeding-form");
+    const msg = document.getElementById("msg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const feedingData = {
+        animal_id: form.animal_id.value,
+        feed_type: form.feed_type.value,
+        quantity: parseFloat(form.quantity.value),
+        feeding_time: form.feeding_time.value,
+        date: form.date.value
+      };
+
+      try {
+        const res = await fetch("http://localhost:8000/feeding", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(feedingData)
+        });
+
+        if (res.ok) {
+          msg.textContent = "✅ Feeding schedule saved!";
+          msg.style.color = "green";
+          form.reset();
+        } else {
+          msg.textContent = "❌ Error saving schedule.";
+          msg.style.color = "red";
+        }
+      } catch (error) {
+        msg.textContent = "⚠️ Network error. Please try again.";
+        msg.style.color = "orange";
+      }
+    });
+  </script>
+</body>
+</html>

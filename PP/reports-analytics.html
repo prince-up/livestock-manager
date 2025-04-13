@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reports & Analytics - Livestock Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #eef7ff;
+    }
+
+    nav {
+      background: #4caf50;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background: #388e3c;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    canvas {
+      margin-top: 2rem;
+    }
+
+    .export-btn {
+      margin-top: 2rem;
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.4rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .export-btn:hover {
+      background: #388e3c;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="animal-records.html">Animal Records</a>
+    <a href="health-monitoring.html">Health</a>
+    <a href="feeding-schedule.html">Feeding</a>
+    <a href="breeding-records.html">Breeding</a>
+    <a href="production-tracking.html">Production</a>
+    <a href="vaccination-history.html">Vaccines</a>
+    <a href="alerts-reminders.html">Reminders</a>
+    <a href="reports-analytics.html">Reports</a>
+    <a href="inventory-management.html">Inventory</a>
+    <a href="expenses-budgeting.html">Expenses</a>
+    <a href="staff-management.html">Staff</a>
+    <a href="chatbot-assistant.html">Chatbot</a>
+  </nav>
+
+  <header>📊 Reports & Analytics</header>
+
+  <div class="container">
+    <h2>Milk Production (Last 7 Days)</h2>
+    <canvas id="milkChart" width="400" height="150"></canvas>
+
+    <h2>Expenses Breakdown</h2>
+    <canvas id="expenseChart" width="400" height="150"></canvas>
+
+    <button class="export-btn" onclick="exportPDF()">📥 Export Report</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const milkCtx = document.getElementById('milkChart').getContext('2d');
+    new Chart(milkCtx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Milk (litres)',
+          data: [22, 24, 23, 25, 21, 26, 28],
+          backgroundColor: 'rgba(76, 175, 80, 0.2)',
+          borderColor: '#4caf50',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3
+        }]
+      }
+    });
+
+    const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+    new Chart(expenseCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Feed', 'Medical', 'Maintenance', 'Others'],
+        datasets: [{
+          label: 'Farm Expenses',
+          data: [500, 300, 200, 100],
+          backgroundColor: [
+            '#66bb6a',
+            '#ef5350',
+            '#42a5f5',
+            '#ffca28'
+          ],
+          borderWidth: 1
+        }]
+      }
+    });
+
+    function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text("Livestock Manager Report", 20, 20);
+      doc.text("Milk Production and Expense Overview", 20, 30);
+      doc.save("livestock_report.pdf");
+    }
+  </script>
+</body>
+</html>

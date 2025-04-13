@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alerts & Reminders - Livestock Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #eef4f9;
+    }
+
+    nav {
+      background: #4caf50;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background: #1976d2;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.3rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.9rem 1.5rem;
+      background: #4caf50;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #388e3c;
+    }
+
+    .reminder-list {
+      margin-top: 2rem;
+    }
+
+    .reminder-item {
+      background: #f3f7ff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      border-left: 5px solid #4caf50;
+    }
+
+    .reminder-item strong {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="animal-records.html">Animal Records</a>
+    <a href="health-monitoring.html">Health</a>
+    <a href="feeding-schedule.html">Feeding</a>
+    <a href="breeding-records.html">Breeding</a>
+    <a href="production-tracking.html">Production</a>
+    <a href="vaccination-history.html">Vaccines</a>
+    <a href="alerts-reminders.html">Reminders</a>
+    <a href="reports-analytics.html">Reports</a>
+    <a href="inventory-management.html">Inventory</a>
+    <a href="expenses-budgeting.html">Expenses</a>
+    <a href="staff-management.html">Staff</a>
+    <a href="chatbot-assistant.html">Chatbot</a>
+  </nav>
+
+  <header>⏰ Alerts & Reminders</header>
+
+  <div class="container">
+    <h2>Set New Reminder</h2>
+    <form id="reminder-form">
+      <label for="animal_id">Animal ID (optional)</label>
+      <input type="text" id="animal_id" name="animal_id" />
+
+      <label for="reminder_type">Reminder Type</label>
+      <select id="reminder_type" name="reminder_type" required>
+        <option value="">Select...</option>
+        <option value="Health Checkup">Health Checkup</option>
+        <option value="Feeding Time">Feeding Time</option>
+        <option value="Vaccination">Vaccination</option>
+        <option value="Breeding">Breeding</option>
+        <option value="Custom">Custom</option>
+      </select>
+
+      <label for="reminder_date">Date & Time</label>
+      <input type="datetime-local" id="reminder_date" name="reminder_date" required />
+
+      <label for="notes">Notes</label>
+      <input type="text" id="notes" name="notes" />
+
+      <button type="submit">➕ Add Reminder</button>
+    </form>
+
+    <div class="reminder-list" id="reminder-list">
+      <!-- Reminders will appear here -->
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("reminder-form");
+    const list = document.getElementById("reminder-list");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const reminder = {
+        animal_id: form.animal_id.value || "General",
+        type: form.reminder_type.value,
+        date: form.reminder_date.value,
+        notes: form.notes.value
+      };
+
+      const div = document.createElement("div");
+      div.className = "reminder-item";
+      div.innerHTML = `
+        <strong>${reminder.type}</strong><br/>
+        Animal: ${reminder.animal_id}<br/>
+        Date: ${new Date(reminder.date).toLocaleString()}<br/>
+        Notes: ${reminder.notes || "None"}
+      `;
+
+      list.appendChild(div);
+      form.reset();
+    });
+  </script>
+</body>
+</html>

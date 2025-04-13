@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chatbot Assistant - Livestock Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f5fc;
+    }
+
+    nav {
+      background: #4caf50;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background: #1976d2;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+    }
+
+    .chat-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      height: 500px;
+    }
+
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+
+    .chat-box p {
+      margin: 0.5rem 0;
+    }
+
+    .user {
+      font-weight: bold;
+      color: #2e7d32;
+    }
+
+    .bot {
+      font-weight: bold;
+      color: #1565c0;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 1rem;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 0.8rem 1.2rem;
+      background: #4caf50;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="animal-records.html">Animal Records</a>
+    <a href="health-monitoring.html">Health</a>
+    <a href="feeding-schedule.html">Feeding</a>
+    <a href="breeding-records.html">Breeding</a>
+    <a href="production-tracking.html">Production</a>
+    <a href="vaccination-history.html">Vaccines</a>
+    <a href="alerts-reminders.html">Reminders</a>
+    <a href="reports-analytics.html">Reports</a>
+    <a href="inventory-management.html">Inventory</a>
+    <a href="expenses-budgeting.html">Expenses</a>
+    <a href="staff-management.html">Staff</a>
+    <a href="chatbot-assistant.html">Chatbot</a>
+  </nav>
+
+  <header>🤖 Livestock Chatbot Assistant</header>
+
+  <div class="chat-container">
+    <div class="chat-box" id="chat-box">
+      <p class="bot"><strong>Bot:</strong> Hello! Ask me anything about livestock health, feeding, breeding, and more. 🐄🐐🐑</p>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Ask your question..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+
+    function sendMessage() {
+      const userText = userInput.value.trim();
+      if (!userText) return;
+
+      appendMessage("user", userText);
+      userInput.value = "";
+
+      setTimeout(() => {
+        const reply = getBotReply(userText);
+        appendMessage("bot", reply);
+      }, 500);
+    }
+
+    function appendMessage(sender, text) {
+      const p = document.createElement('p');
+      p.className = sender;
+      p.innerHTML = `<strong>${sender === 'user' ? 'You' : 'Bot'}:</strong> ${text}`;
+      chatBox.appendChild(p);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function getBotReply(input) {
+      input = input.toLowerCase();
+
+      if (input.includes("feed") || input.includes("diet")) {
+        return "You should feed adult cows twice a day. Ensure a balanced mix of roughage and concentrate!";
+      } else if (input.includes("vaccine") || input.includes("vaccination")) {
+        return "Common vaccines include FMD, HS, and BQ. Always consult your vet for schedules.";
+      } else if (input.includes("milk") || input.includes("production")) {
+        return "Milk production varies by breed. Ensure good diet, clean environment, and regular milking.";
+      } else if (input.includes("heat") || input.includes("mating")) {
+        return "Cows show heat signs like restlessness, mounting others, and vaginal discharge. Track cycles regularly.";
+      } else if (input.includes("disease") || input.includes("illness")) {
+        return "If you notice symptoms like loss of appetite, fever, or lethargy, isolate the animal and call the vet.";
+      } else {
+        return "Sorry, I don't have a clear answer. Please consult a vet or expert. 🐾";
+      }
+    }
+  </script>
+</body>
+</html>
